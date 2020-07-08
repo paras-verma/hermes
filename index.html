@@ -1,0 +1,60 @@
+<!-- Solution to the problem: https://stackoverflow.com/questions/42458831/assign-html-snippet-to-js-variable -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hermes</title>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="js/ajax-util.js"></script>
+    <script src="js/script.js"></script>
+    <style>
+      html {
+        margin: 5rem;
+      }
+      body {
+        width: 20rem;
+        display: flex;
+        flex-direction: column;
+      }
+      input {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    PoC's Mail Address: <input type="email" id="mailTo" /> PoC's Name:
+    <input type="email" id="mailToName" />
+    <script type="text/javascript">
+      function showfield(name) {
+        if (name == "Other")
+          document.getElementById("div1").innerHTML =
+            'Name: <input type="text" id="otherPersonContacted" />';
+        else document.getElementById("div1").innerHTML = "";
+      }
+    </script>
+  Person Contacted
+    <select
+      id="personContacted"
+      onchange="showfield(this.options[this.selectedIndex].value)"
+    >
+      <option selected="selected" disabled>Please select ...</option>
+      <option value="Same">Same as above</option>
+      <option value="Other">Other</option>
+    </select>
+    <div id="div1"></div>
+    Company: <input type="email" id="mailToCompany" />
+    CDC PoC:
+    <select id="CDCPoC">
+      <option value="0">Paras</option>
+      <option value="1">Samarth</option>
+    </select>
+    <input type="button" onclick="sendMail();" value="Send" />
+  </body>
+</html>
