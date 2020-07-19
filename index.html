@@ -1,60 +1,338 @@
-<!-- Solution to the problem: https://stackoverflow.com/questions/42458831/assign-html-snippet-to-js-variable -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hermes</title>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
-    ></script>
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
-    <script src="js/ajax-util.js"></script>
-    <script src="js/script.js"></script>
+    />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Hermes</title>
     <style>
-      html {
-        margin: 5rem;
-      }
+      html,
       body {
-        width: 20rem;
+        height: 100vh;
+      }
+      form {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
-      input {
-        margin-bottom: 1rem;
+      .form-row {
+        width: 100%;
       }
     </style>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="/ajax-util.js"></script>
+    <script src="/script.js"></script>
   </head>
   <body>
-    PoC's Mail Address: <input type="email" id="mailTo" /> PoC's Name:
-    <input type="email" id="mailToName" />
-    <script type="text/javascript">
-      function showfield(name) {
-        if (name == "Other")
-          document.getElementById("div1").innerHTML =
-            'Name: <input type="text" id="otherPersonContacted" />';
-        else document.getElementById("div1").innerHTML = "";
-      }
-    </script>
-  Person Contacted
-    <select
-      id="personContacted"
-      onchange="showfield(this.options[this.selectedIndex].value)"
-    >
-      <option selected="selected" disabled>Please select ...</option>
-      <option value="Same">Same as above</option>
-      <option value="Other">Other</option>
-    </select>
-    <div id="div1"></div>
-    Company: <input type="email" id="mailToCompany" />
-    CDC PoC:
-    <select id="CDCPoC">
-      <option value="0">Paras</option>
-      <option value="1">Samarth</option>
-    </select>
-    <input type="button" onclick="sendMail();" value="Send" />
+    <div class="container mt-5">
+      <!-- Title -->
+      <div class="row justify-content-center mt-5 mb-5">
+        <h1>Hermes</h1>
+      </div>
+      <!-- Nav Pills -->
+      <div class="row justify-content-center">
+        <ul class="nav nav-pills">
+          <!-- Cold Mail -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#coldMail" id="isCold"
+              >Cold Mail</a
+            >
+          </li>
+          <!-- Regular Mail -->
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="isRegular"
+              data-toggle="pill"
+              href="#regularMail"
+              >Regular Mail</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- Forms -->
+      <div class="row justify-content-center mt-4">
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <!-- Cold Mail Form -->
+          <div class="tab-pane container" id="coldMail">
+            <form class="justify-content-center" id="coldMailForm">
+              <!-- Mail Address -->
+              <div class="form-row">
+                <div class="col mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-at"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailTo_Cold"
+                      placeholder="Mail Address"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- PoC Name -->
+              <div class="form-row">
+                <div class="col-xs-2">
+                  <div class="form-group">
+                    <select class="form-control" id="salutation_Cold">
+                      <option>Mr.</option>
+                      <option>Ms.</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailToName_Cold"
+                      placeholder="Name of the PoC"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Company Name -->
+              <div class="form-row">
+                <div class="col-md-12 mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-building"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailToCompany_Cold"
+                      placeholder="Name of the firm"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- CDC PoC -->
+              <div class="form-row">
+                <div class="col-md-12 mb-3">
+                  <div class="form-group">
+                    <select class="form-control" id="CDCPoC_Cold">
+                      <option selected disabled>CDC PoC</option>
+                      <option value="0">Aarushi</option>
+                      <option value="1">Anshika</option>
+                      <option value="2">Arpit</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <input type="button" class="btn btn-primary justify-content-center"
+              onclick="sendCold()" value="Send Mail">
+            </form>
+          </div>
+          <!-- Regular Mail Form -->
+          <div class="tab-pane container active" id="regularMail">
+            <form class="justify-content-center">
+              <!-- Telephonic/LinkedIn -->
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <select class="form-control" id="mailType" required>
+                      <option value="none" selected disabled
+                        >Telephonic/LinkedIn</option
+                      >
+                      <option value="telephonic">Telephonic</option>
+                      <option value="LinkedIn" id="someone_else"
+                        >LinkedIn</option
+                      >
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- Mail Address -->
+              <div class="form-row">
+                <div class="col mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-at"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailTo_Regular"
+                      placeholder="Mail Address"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- PoC Name -->
+              <div class="form-row">
+                <div class="col-xs-2">
+                  <div class="form-group">
+                    <select class="form-control" id="salutation_Regular">
+                      <option>Mr.</option>
+                      <option>Ms.</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailToName_Regular"
+                      placeholder="Name of the PoC"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Other PoC Name -->
+              <div class="form-row" id="telephonicMail_OtherPerson">
+                <div class="col">
+                  <div class="form-group">
+                    <select
+                      class="form-control"
+                      id="PoC_colleague"
+                      onchange="showfield(this.options[this.selectedIndex].value)"
+                    >
+                      <option selected disabled>Person Contacted</option>
+                      <option value="same">Same as above</option>
+                      <option value="else">Someone else</option>
+                    </select>
+                  </div>
+                </div>                
+              </div>
+              <!-- Date -->
+              <div class="form-row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <select
+                      class="form-control"
+                      id="mailDay"
+                      onchange="mail_Day(this.options[this.selectedIndex].value)"
+                    >
+                      <option value="Today" selected>Today</option>
+                      <option value="Yesterday">Yesterday</option>
+                      <option value="Custom">Custom Date</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-clock"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailDate"
+                      aria-describedby="inputGroupPrepend2"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Company Name -->
+              <div class="form-row">
+                <div class="col-md-12 mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend2">
+                        <i class="fas fa-building"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mailToCompany_Regular"
+                      placeholder="Name of the firm"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- CDC PoC -->
+              <div class="form-row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <select class="form-control" id="CDCPoC_Regular">
+                      <option selected disabled>CDC PoC</option>
+                      <option value="0">Aarushi</option>
+                      <option value="1">Anshika</option>
+                      <option value="2">Arpit</option>
+                      <option value="3">Bhavya</option>
+                      <option value="4">Chaitanya</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <input type="button" class="btn btn-primary justify-content-center"
+              onclick="sendRegular()" value="Send Mail">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
