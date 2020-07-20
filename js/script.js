@@ -64,9 +64,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         );
         // console.log(mailBody);
         Email.send({
-          SecureToken: "8cb5e24c-ade0-493e-94c6-95ffe85c09ce",
+          SecureToken: "7fd55f50-95f2-46c5-8a0d-5cc768b3559b",
           To: mailTo,
-          From: "gaurav.19537@sscbs.du.ac.in",
+          From: "paras.19508@sscbs.du.ac.in",
           Subject: mailSubject,
           Body: mailBody,
         }).then(function(message) {
@@ -230,12 +230,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         );
         // console.log(mailBody);
         Email.send({
-          SecureToken: "8cb5e24c-ade0-493e-94c6-95ffe85c09ce",
+          SecureToken: "7fd55f50-95f2-46c5-8a0d-5cc768b3559b",
           To: mailTo,
-          From: "gaurav.19537@sscbs.du.ac.in",
+          From: "paras.19508@sscbs.du.ac.in",
           Subject: mailSubject,
           Body: mailBody,
-        }).then((message) => alert("mail sent succesfully!"));
+        }).then(function(message) {
+          
+          alert("mail sent succesfully!");
+          document.getElementById("regularMailForm").reset();
+        });
       },
       false
     );
