@@ -69,8 +69,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           From: "paras.19508@sscbs.du.ac.in",
           Subject: mailSubject,
           Body: mailBody,
-        }).then(function(message) {
-          
+        }).then(function (message) {
           alert("mail sent succesfully!");
           document.getElementById("coldMailForm").reset();
         });
@@ -83,27 +82,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var mailDate = new Date();
   var dd = String(mailDate.getDate()).padStart(2, "0");
   var ordinal;
-
-  switch (dd % 10) {
-    case 1:
-      ordinal = "st";
-      break;
-    case 2:
-      ordinal = "nd";
-      break;
-    case 3:
-      ordinal = "rd";
-      break;
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 0:
-      ordinal = "th";
-      break;
-  }
 
   var mm = String(mailDate.getMonth() + 1);
   var month = [
@@ -124,16 +102,69 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   var yyyy = mailDate.getFullYear();
 
-  mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
-  document.getElementById("mailDate").placeholder = mailDate;
+  calOrdinal = function (date) {
+    switch (date % 10) {
+      case 1:
+        return (ordinal = "st");
+      case 2:
+        return (ordinal = "nd");
+      case 3:
+        return (ordinal = "rd");
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 0:
+        return (ordinal = "th");
+    }
+  };
+
+  if (localStorage.loginSuccess || loginSuccess) {
+    console.log("success");
+    calOrdinal(dd);
+    mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
+    document.getElementById("mailDate").placeholder = mailDate;
+    localStorage.setItem("loginSuccess", "true");
+    document.getElementById("navTabs").classList.remove("m-fadeOut");
+    document.getElementById("navTabs").classList.add("m-fadeIn");
+    document.getElementById("hermesTitle").classList.remove("my-5");
+    document.getElementById("hermesTitle").classList.add("my-3");
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("sendMailTabs").style.display = "block";
+    document.getElementById("logOutButton").style.display = "block";
+  }
 
   mail_Day = function (mailDay) {
     if (mailDay == "Today") {
       document.getElementById("mailDate").disabled = true;
+      calOrdinal(dd);
+      switch (dd % 10) {
+        case 1:
+          ordinal = "st";
+          break;
+        case 2:
+          ordinal = "nd";
+          break;
+        case 3:
+          ordinal = "rd";
+          break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 0:
+          ordinal = "th";
+          break;
+      }
       mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
       document.getElementById("mailDate").value = mailDate;
     } else if (mailDay == "Yesterday") {
       document.getElementById("mailDate").disabled = true;
+      calOrdinal(dd - 1);
       mailDate = dd - 1 + ordinal + " " + mm + " " + yyyy + " (Yesterday)";
       document.getElementById("mailDate").value = mailDate;
     } else {
@@ -144,16 +175,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
   };
 
   var check = 0;
+  var colleagueDetails =
+    '</div> <!-- Other PoC Details --> <div class="form-row mb-3" id="telephonicMail_ColleagueDetails"> <div class="col-xs-2" id="div_salutation_PoC_colleague" > <select class="form-control" id="salutation_PoC_colleague" > <option>Mr.</option> <option>Ms.</option> </select> </div> <div class="col" id="div_name_PoC_colleague" > <div class="input-group"> <div class="input-group-prepend"> <span class="input-group-text" id="name_PoC_colleaguePrepend" > <i class="fas fa-user" aria-hidden="true"></i> </span> </div> <input type="text" class="form-control" id="name_PoC_colleague" placeholder="Colleague&apos;s Name" aria-describedby="inputGroupPrepend2" required /> </div> </div>';
   showfield = function (person) {
     if (person == "else" && check < 1) {
-      document.getElementById("telephonicMail_OtherPerson").innerHTML +=
-        '          <div class="col-xs-2" id="div_salutation_PoC_colleague">                  <div class="form-group">                    <select class="form-control" id="salutation_PoC_colleague">                      <option>Mr.</option>                      <option>Ms.</option>                    </select>                  </div>                </div>                <div class="col" id="div_name_PoC_colleague">                  <div class="input-group">                    <div class="input-group-prepend">                      <span class="input-group-text" id="name_PoC_colleaguePrepend">                        <i class="fas fa-user"></i>                      </span>                    </div>                    <input                      type="text"                      class="form-control"                      id="name_PoC_colleague"                      placeholder="Name of the PoC"                      aria-describedby="inputGroupPrepend2"                      required                    />                  </div>                </div>            ';
+      document
+        .getElementById("telephonicMail_OtherPerson")
+        .insertAdjacentHTML("afterend", colleagueDetails);
       check++;
       document.getElementById("PoC_colleague").selectedIndex = "2";
     } else {
       console.log(person);
-      document.getElementById("div_salutation_PoC_colleague").remove();
-      document.getElementById("div_name_PoC_colleague").remove();
+      document.getElementById("telephonicMail_ColleagueDetails").remove();
       check = 0;
     }
   };
@@ -235,8 +268,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           From: "paras.19508@sscbs.du.ac.in",
           Subject: mailSubject,
           Body: mailBody,
-        }).then(function(message) {
-          
+        }).then(function (message) {
           alert("mail sent succesfully!");
           document.getElementById("regularMailForm").reset();
         });
@@ -252,4 +284,33 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // console.log(mailToCompany);
     // console.log(PoCDetails);
   };
+
+  // Get the input field
+  var loginEmail = document.getElementById("loginEmail");
+
+  // Get the warning text
+  var CapsLockWarningEmail = document.getElementById("CapsLockWarningEmail");
+
+  // When the user presses any key on the keyboard, run the function
+  loginEmail.addEventListener("keyup", function (event) {
+    // If "caps lock" is pressed, display the warning text
+    if (event.getModifierState("CapsLock")) {
+      CapsLockWarningEmail.style.visibility = "visible";
+    } else {
+      CapsLockWarningEmail.style.visibility = "hidden";
+    }
+  });
+
+  var loginPassword = document.getElementById("loginPassword");
+  var text = document.getElementById("CapsLockWarning");
+
+  // When the user presses any key on the keyboard, run the function
+  loginPassword.addEventListener("keyup", function (event) {
+    // If "caps lock" is pressed, display the warning text
+    if (event.getModifierState("CapsLock")) {
+      text.style.visibility = "visible";
+    } else {
+      text.style.visibility = "hidden";
+    }
+  });
 });
