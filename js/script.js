@@ -121,45 +121,37 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   };
 
-  if (localStorage.loginSuccess || loginSuccess) {
-    console.log("success");
-    calOrdinal(dd);
-    mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
-    document.getElementById("mailDate").placeholder = mailDate;
-    localStorage.setItem("loginSuccess", "true");
-    document.getElementById("navTabs").classList.remove("m-fadeOut");
-    document.getElementById("navTabs").classList.add("m-fadeIn");
-    document.getElementById("hermesTitle").classList.remove("my-5");
-    document.getElementById("hermesTitle").classList.add("my-3");
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("sendMailTabs").style.display = "block";
-    document.getElementById("logOutButton").style.display = "block";
-  }
+  console.log(localStorage.loginSuccess);
+  // console.log(localStorage.loginSuccess);
+  console.log(loginSuccess);
+
+  OnLoginSuccess = function () {
+    if (localStorage.loginSuccess == "true" || loginSuccess == true) {
+      localStorage.setItem("loginSuccess", "true");
+      document.getElementById("navTabs").classList.remove("m-fadeOut");
+      document.getElementById("navTabs").classList.add("m-fadeIn");
+      document.getElementById("hermesTitle").classList.remove("my-5");
+      document.getElementById("hermesTitle").classList.add("my-3");
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("logOutButton").style.display = "block";
+      console.log("success");
+      $ajaxUtils.sendGetRequest(
+        "tabContents.html",
+        function (inner_HTML) {
+          document.querySelector('.card-body').innerHTML = inner_HTML;
+        },
+        false
+      );
+      calOrdinal(dd);
+      mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
+      // document.getElementById("mailDate").placeholder = mailDate;
+    }
+  };
 
   mail_Day = function (mailDay) {
     if (mailDay == "Today") {
       document.getElementById("mailDate").disabled = true;
       calOrdinal(dd);
-      switch (dd % 10) {
-        case 1:
-          ordinal = "st";
-          break;
-        case 2:
-          ordinal = "nd";
-          break;
-        case 3:
-          ordinal = "rd";
-          break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 0:
-          ordinal = "th";
-          break;
-      }
       mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
       document.getElementById("mailDate").value = mailDate;
     } else if (mailDay == "Yesterday") {

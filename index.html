@@ -59,60 +59,62 @@
           width: 25%;
       }
       @media only screen and (max-width: 400px) {
-  #loginButton {
-      width: 50%;
-      
-  }
-  .form-group {
-      width: 90% !important;
-  }
-}
-.m-fadeOut {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s linear 300ms, opacity 300ms;
-}
-.m-fadeIn {
-  visibility: visible;
-  opacity: 1;
-  transition: visibility 0s linear 0s, opacity 300ms;
-}
-#sendMailTabs {
-  display: none;
-}
-#logOutButton {
-  display: none;
-}
-#logOutButton {
-  position: absolute;  
-  top: -1.5rem;
-  right: 1.5rem;
-  display: block;
-  height: 3rem;
-  width: 3rem;
-  border-radius: 50px; 
-  padding: .7rem;
-  background-color: rgb(253, 253, 253);
-}
-@media only screen and (max-width: 770px) {
-  #logOutButton {
-  position: absolute;  
-  top: -7rem;
-  height: 2.5rem;
-  width: 2.5rem;
-  background-color: rgb(255, 255, 255);
-
-}
-}
+        #loginButton {
+          width: 50%;
+            
+        }
+        .form-group {
+          width: 90% !important;
+        }
+      }
+      .m-fadeOut {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 300ms, opacity 300ms;
+      }
+      .m-fadeIn {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s linear 0s, opacity 300ms;
+      }
+      #logOutButton {
+        position: absolute;  
+        bottom: -1.5rem;
+        right: 1.5rem;
+        display: block;
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50px; 
+        padding: .7rem;
+        background-color: rgb(253, 253, 253);
+      }
+      @media only screen and (max-width: 770px) {
+        #logOutButton {
+          position: absolute;  
+          top: 1.5rem;
+          height: 2.5rem;
+          width: 2.5rem;
+          background-color: rgb(255, 255, 255);
+        }
+      }
+      .card {
+        border-radius: .5rem;
+      }
+      .card-body {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+      }      
     </style>
   </head>
-  <body class="bg-dark">
+  <body class="bg-dark" onload="OnLoginSuccess()">
     <div class="container d-flex justify-content-center align-items-center h-100" id="main-window">
       <!-- Main Card -->
       <div class="row justify-content-center w-100">
         <div class="col col-lg-6">
           <div class="card bg-success">
-            <div class="card-header text-white text-center">              
+            <div class="card-header text-white text-center" style="position: relative;">              
               <h1 class="my-5" id="hermesTitle">Hermes</h1>
               <nav class="m-fadeOut" id="navTabs">
                 <div
@@ -142,9 +144,7 @@
                   >
                 </div>
               </nav>
-            </div>
-            <div class="card-body bg-light" style="position: relative;">    
-              <div id="logOutButton"  onclick="logOut()">
+              <div id="logOutButton"  onclick="logOut()" style="display: none;">
                 <svg version="1.1" focusable="false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background: new 0 0 512 512;" xml:space="preserve">
                   <style type="text/css">
                     .st0 {
@@ -156,7 +156,9 @@
           c0-17.7,14.3-32,32-32h84c6.6,0,12-5.4,12-12V76c0-6.6-5.4-12-12-12H96c-53,0-96,43-96,96v192c0,53,43,96,96,96h84
           C186.6,448,192,442.6,192,436z"></path>
                 </svg>
-                 </div>      
+              </div>
+            </div>
+            <div class="card-body bg-light">                        
               <form id="loginForm" class="pb-4">
                 <label id="loginFail">...</label>
                 <div class="form-group">                  
@@ -179,6 +181,7 @@
                     type="password"
                     class="form-control"
                     id="loginPassword"
+                    onfocus="hideFail()"
                     placeholder="Password"
                   />
                   <small id="CapsLockWarning" class="form-text text-muted"
@@ -186,290 +189,25 @@
                   >
                 </div>                
                 <input id="loginButton" onclick="login()" type="button" class="mt-3  btn btn-success" value="Login"></input>
-              </form>
-              <div class="tab-content" id="sendMailTabs">
-                <div class="tab-pane fade"
-                  id="nav-home"
-                  role="tabpanel"
-                  aria-labelledby="nav-home-tab"
-                >
-                  <div class="row justify-content-center">
-                    <div class="col-md-7">
-                      <form id="coldMailForm">
-                        <!-- Mail Address -->
-                        <div class="form-row">
-                          <div class="col-md-12 mb-3">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-at"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailTo_Cold"
-                                placeholder="Mail Address"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- PoC Name -->
-                        <div class="form-row mb-3">
-                          <div class="col-xs-2">
-                            <select class="form-control" id="salutation_Cold">
-                              <option>Mr.</option>
-                              <option>Ms.</option>
-                            </select>
-                          </div>
-                          <div class="col">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-user"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailToName_Cold"
-                                placeholder="Name of the PoC"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Company Name -->
-                        <div class="form-row">
-                          <div class="col-md-12 mb-3">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-building"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailToCompany_Cold"
-                                placeholder="Name of the firm"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- CDC PoC -->
-                        <div class="form-row">
-                          <div class="col-md-12 mb-3">
-                            <select class="form-control" id="CDCPoC_Cold">
-                              <option selected disabled>CDC PoC</option>
-                              <option value="0">Aarushi</option>
-                              <option value="1">Anshika</option>
-                              <option value="2">Arpit</option>
-                            </select>
-                          </div>
-                        </div>
-                        <input
-                          type="button"
-                          class="btn btn-primary justify-content-center"
-                          onclick="sendCold()"
-                          value="Send Mail"
-                        />
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane fade show active"
-                  id="nav-profile"
-                  role="tabpanel"
-                  aria-labelledby="nav-profile-tab"
-                >
-                  <div class="row justify-content-center">
-                    <div class="col-md-7">
-                      <form class="justify-content-center" id="regularMailForm">
-                        <!-- Telephonic/LinkedIn -->
-                        <div class="form-row mb-3">
-                          <div class="col">
-                            <select class="form-control" id="mailType" required>
-                              <option value="none" selected disabled
-                                >Telephonic/LinkedIn</option
-                              >
-                              <option value="telephonic">Telephonic</option>
-                              <option value="LinkedIn" id="someone_else"
-                                >LinkedIn</option
-                              >
-                            </select>
-                          </div>
-                        </div>
-                        <!-- Mail Address -->
-                        <div class="form-row">
-                          <div class="col mb-3">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-at"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailTo_Regular"
-                                placeholder="Mail Address"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- PoC Name -->
-                        <div class="form-row mb-3">
-                          <div class="col-xs-2">
-                            <select
-                              class="form-control"
-                              id="salutation_Regular"
-                            >
-                              <option>Mr.</option>
-                              <option>Ms.</option>
-                            </select>
-                          </div>
-                          <div class="col">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-user"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailToName_Regular"
-                                placeholder="Name of the PoC"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Other PoC Name -->
-                        <div class="form-row" id="telephonicMail_OtherPerson">
-                          <div class="col mb-3">
-                            <select
-                              class="form-control"
-                              id="PoC_colleague"
-                              onchange="showfield(this.options[this.selectedIndex].value)"
-                            >
-                              <option selected disabled
-                                >Person Contacted</option
-                              >
-                              <option value="same">Same as above</option>
-                              <option value="else">Someone else</option>
-                            </select>
-                          </div>
-                        </div>
-                        <!-- Date -->
-                        <div class="form-row">
-                          <div class="col-md-4 mb-3">
-                            <select
-                              class="form-control"
-                              id="mailDay"
-                              onchange="mail_Day(this.options[this.selectedIndex].value)"
-                            >
-                              <option value="Today" selected>Today</option>
-                              <option value="Yesterday">Yesterday</option>
-                              <option value="Custom">Custom Date</option>
-                            </select>
-                          </div>
-                          <div class="col-md-8 mb-3">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-clock"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailDate"
-                                aria-describedby="inputGroupPrepend2"
-                                disabled
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Company Name -->
-                        <div class="form-row">
-                          <div class="col-md-12 mb-3">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span
-                                  class="input-group-text"
-                                  id="inputGroupPrepend2"
-                                >
-                                  <i class="fas fa-building"></i>
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="mailToCompany_Regular"
-                                placeholder="Name of the firm"
-                                aria-describedby="inputGroupPrepend2"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- CDC PoC -->
-                        <div class="form-row mb-4">
-                          <div class="col-md-12">
-                            <select class="form-control" id="CDCPoC_Regular">
-                              <option selected disabled>CDC PoC</option>
-                              <option value="0">Aarushi</option>
-                              <option value="1">Anshika</option>
-                              <option value="2">Arpit</option>
-                              <option value="3">Bhavya</option>
-                              <option value="4">Chaitanya</option>
-                            </select>
-                          </div>
-                        </div>
-                        <input
-                          type="button"
-                          class="btn btn-primary justify-content-center"
-                          onclick="sendRegular()"
-                          value="Send Mail"
-                        />
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>             
+              </form>            
             </div>            
           </div>
         </div>
       </div>
     </div>
+
+    <!-- <div class="position-absolute w-100 d-flex flex-column p-4">
+      <div class="toast ml-auto" role="alert" data-delay="700" data-autohide="false">
+          <div class="toast-header">
+              <strong class="mr-auto text-primary">Toast</strong>
+              <small class="text-muted">3 mins ago</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="toast-body"> Hey, there! This is a Bootstrap 4 toast. </div>
+      </div>
+  </div> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

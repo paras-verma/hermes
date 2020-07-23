@@ -1,4 +1,4 @@
-var loginSuccess;
+var loginSuccess = false;
 document.addEventListener("DOMContentLoaded", function (event) {
   // Your web app's Firebase configuration
   var firebaseConfig = {
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  
+
   logOut = function () {
     console.log(loginSuccess);
     firebase.auth().signOut();
@@ -23,10 +23,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
     console.log(localStorage.loginSuccess);
     document.getElementById("navTabs").classList.remove("m-fadeIn");
     document.getElementById("navTabs").classList.add("m-fadeOut");
-    document.getElementById("hermesTitle").classList.add("my-5");
-    document.getElementById("loginForm").style.display = "";
-    document.getElementById("sendMailTabs").style.display = "none";
+    document.getElementById("hermesTitle").classList.add("my-5");    
+    $ajaxUtils.sendGetRequest(
+      "loginPlaceholder.html",
+      function (inner_HTML) {
+        document.querySelector('.card-body').innerHTML = inner_HTML;
+      },
+      false
+    );
     document.getElementById("logOutButton").style.display = "none";
+    console.log(localStorage.loginSuccess);
   };
 
   login = function () {
@@ -37,22 +43,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //Sign in
     const promise = auth.signInWithEmailAndPassword(loginEmail, loginPassword);
 
-    loginCheck = function () {
-      loginSuccess = true;
-      localStorage.setItem("loginSuccess", "true");
-      document.getElementById("navTabs").classList.remove("m-fadeOut");
-      document.getElementById("navTabs").classList.add("m-fadeIn");
-      document.getElementById("hermesTitle").classList.remove("my-5");
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("sendMailTabs").style.display = "block";
-      document.getElementById("logOutButton").style.display = "block";
-    };
-
     promise
       .then(function (user) {
-        loginCheck();
-        console.log("success");
         loginSuccess = true;
+        localStorage.setItem("loginSuccess", "true");
       })
       .catch(function (error) {
         console.log(error);
@@ -70,21 +64,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             "Too many requests. Try again later";
         }
       });
-    // firebase.auth().onAuthStateChanged((firebaseUser) => {
-    //   if (firebase.code == "auth/invalid-email") {
-    //     document.getElementById("loginFail").style.visibility = "visible";
-    //     console.log("END");
-    //   } else if (firebaseUser.email == "paras") {
-    //     console.log(firebaseUser);
-    //     loginSuccess = true;
-    //     document.getElementById("navTabs").classList.remove("m-fadeOut");
-    //     document.getElementById("navTabs").classList.add("m-fadeIn");
-    //     document.getElementById("hermesTitle").classList.remove("py-5");
-    //     document.getElementById("loginForm").style.display = "none";
-    //     document.getElementById("sendMailTabs").style.display = "block";
-    //   }
-    // });
   };
+
+  firebase.auth().onAuthStateChanged((firebaseUser) => {
+    if (loginSuccess == true) {
+      OnLoginSuccess();
+    }
+  });
 
   hideFail = function () {
     document.getElementById("loginFail").style.visibility = "hidden";
