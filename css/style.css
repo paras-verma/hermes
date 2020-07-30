@@ -94,9 +94,6 @@ nav a:hover {
   border-bottom-right-radius: 0.5rem;  
   /* background-color: #2A2E35 !important; */
 }
-.card-body .row {
-    height: 60vh;    
-}
 #coldMailPreview {
   overflow-x: auto !important;
 }
