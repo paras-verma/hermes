@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var PoCDetails = document.getElementById("CDCPoC_Cold").value;
 
     $ajaxUtils.sendGetRequest(
-      "templates/newtemplate.html",
+      "templates/newTemplate.html",
       function (mailContent) {
         mailContent = insertProperty(mailContent, "mailToName", mailToName);
         mailContent = insertProperty(
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var PoCDetails = document.getElementById("CDCPoC_Regular").value;
 
     $ajaxUtils.sendGetRequest(
-      "templates/newtemplate.html",
+      "templates/newTemplate.html",
       function (mailContent) {
         mailContent = insertProperty(mailContent, "mailToName", mailToName);
         mailContent = insertProperty(
