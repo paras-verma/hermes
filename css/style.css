@@ -1,0 +1,102 @@
+html,
+body {
+  height: 100vh;
+  background-color: #2A2E35;
+}
+.card {
+    border: none;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-row {
+  width: 100%;
+}
+nav a {
+  color: white;
+  font-weight: bold;
+}
+nav a:hover {
+  color: white;
+  font-weight: bold;
+  border: none !important;
+}
+.form-group {
+  width: 60% !important;
+}
+#CapsLockWarningEmail {
+  visibility: hidden;
+  color: red !important;
+}
+#CapsLockWarning {
+  visibility: hidden;
+  color: red !important;
+}
+#loginFail {
+  visibility: hidden;
+  color: red !important;
+}
+#loginButton {
+  width: 25%;
+}
+@media only screen and (max-width: 400px) {
+  #loginButton {
+    width: 50%;
+  }
+  .form-group {
+    width: 90% !important;
+  }
+}
+.m-fadeOut {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 300ms, opacity 300ms;
+}
+.m-fadeIn {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s linear 0s, opacity 300ms;
+}
+#logOutButton {
+  position: absolute;
+  bottom: -1.5rem;
+  right: 1.5rem;
+  display: block;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50px;
+  padding: 0.7rem;
+  background-color: rgb(253, 253, 253);
+}
+@media only screen and (max-width: 770px) {
+  #logOutButton {
+    position: absolute;
+    top: 1.5rem;
+    height: 3rem;
+    width: 3rem;   
+    background: none; 
+  }
+  #logOutButton .st0 {
+    fill: white;
+  }
+}
+.card {
+  border-radius: 0.5rem;
+  background-image: linear-gradient(-90deg, green, yellowgreen);
+}
+.card-body {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;  
+  /* background-color: #2A2E35 !important; */
+}
+.card-body .row {
+    height: 60vh;    
+}
+#coldMailPreview {
+  overflow-x: auto !important;
+}

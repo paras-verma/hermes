@@ -19,6 +19,91 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var colleagueName;
   var mailToCompany; //Company Name
   var mailBody; //Mail's Body
+  var accountPassword;
+
+  setCapsCheck = function () {
+    // Get the input field
+    var loginEmail = document.getElementById("loginEmail");
+
+    // Get the warning text
+    var CapsLockWarningEmail = document.getElementById("CapsLockWarningEmail");
+    // When the user presses any key on the keyboard, run the function
+    loginEmail.addEventListener("keyup", function (event) {
+      // If "caps lock" is pressed, display the warning text
+      if (event.getModifierState("CapsLock")) {
+        CapsLockWarningEmail.style.visibility = "visible";
+      } else {
+        CapsLockWarningEmail.style.visibility = "hidden";
+      }
+    });
+
+    var loginPassword = document.getElementById("loginPassword");
+    var CapsLockWarning = document.getElementById("CapsLockWarning");
+
+    // When the user presses any key on the keyboard, run the function
+    loginPassword.addEventListener("keyup", function (event) {
+      // If "caps lock" is pressed, display the warning text
+      if (event.getModifierState("CapsLock")) {
+        CapsLockWarning.style.visibility = "visible";
+      } else {
+        CapsLockWarning.style.visibility = "hidden";
+      }
+    });
+  };
+
+  // Login Check
+  OnLoginSuccess = function () {
+    if (localStorage.loginSuccess == "true" || loginSuccess == true) {
+      localStorage.setItem("loginSuccess", "true");
+      console.log("onlogin loaded");
+      document.getElementById("navTabs").classList.remove("m-fadeOut");
+      document.getElementById("navTabs").classList.add("m-fadeIn");
+      document.getElementById("hermesTitle").classList.remove("my-5");
+      document.getElementById("hermesTitle").classList.add("my-3");
+      document.getElementById("logOutButton").style.display = "block";
+      $ajaxUtils.sendGetRequest(
+        "tabContents.html",
+        function (inner_HTML) {
+          document.querySelector(".card-body").innerHTML = inner_HTML;
+          calOrdinal(dd);
+          mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
+          document.getElementById("mailDate").placeholder = mailDate;
+
+          const coldForm = document.getElementById("coldMailForm");
+
+          coldForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            $("#mailPreview").modal("show");
+            sendCold();
+          });
+
+          const regularForm = document.getElementById("regularMailForm");
+
+          regularForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            $("#mailPreview").modal("show");
+            sendRegular();
+          });
+        },
+        false
+      );
+    } else {
+      $ajaxUtils.sendGetRequest(
+        "loginPlaceholder.html",
+        function (inner_HTML) {
+          document.querySelector(".card-body").innerHTML = inner_HTML;
+
+          console.log("Login Unsuccessful!");
+
+          setCapsCheck();
+        },
+        false
+      );
+    }
+  };
+  // Login Check ends here
+
+  // SCRIPT FOR COLD MAIL
 
   sendCold = function () {
     mailTypePlaceholder = "";
@@ -42,40 +127,44 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var PoCDetails = document.getElementById("CDCPoC_Cold").value;
 
     $ajaxUtils.sendGetRequest(
-      "templates/template.html",
-      function (mailBody) {
-        mailBody = insertProperty(mailBody, "mailToName", mailToName);
-        mailBody = insertProperty(
-          mailBody,
+      "templates/newtemplate.html",
+      function (mailContent) {
+        mailContent = insertProperty(mailContent, "mailToName", mailToName);
+        mailContent = insertProperty(
+          mailContent,
           "mailTypePlaceholder",
           mailTypePlaceholder
         );
-        mailBody = insertProperty(mailBody, "mailToCompany", mailToCompany);
-        mailBody = insertProperty(mailBody, "PoCName", CDCPoC.name[PoCDetails]);
-        mailBody = insertProperty(
-          mailBody,
+        mailContent = insertProperty(
+          mailContent,
+          "mailToCompany",
+          mailToCompany
+        );
+        mailContent = insertProperty(
+          mailContent,
+          "PoCName",
+          CDCPoC.name[PoCDetails]
+        );
+        mailContent = insertProperty(
+          mailContent,
           "phoneNumber",
           CDCPoC.phoneNumber[PoCDetails]
         );
-        mailBody = insertProperty(
-          mailBody,
+        mailContent = insertProperty(
+          mailContent,
           "mailAddress",
           CDCPoC.mailAddress[PoCDetails]
         );
-        // console.log(mailBody);
-        Email.send({
-          SecureToken: "7fd55f50-95f2-46c5-8a0d-5cc768b3559b",
-          To: mailTo,
-          From: "paras.19508@sscbs.du.ac.in",
-          Subject: mailSubject,
-          Body: mailBody,
-        }).then(function (message) {
-          alert("mail sent succesfully!");
-          document.getElementById("coldMailForm").reset();
-        });
+
+        document.querySelector(".modal-body").innerHTML = mailContent;
+        mailBody = mailContent;
       },
       false
     );
+  };
+
+  verify = function () {
+    $("#verificationModal").modal("show");
   };
 
   //Date at which the mail is to be sent
@@ -122,31 +211,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   };
 
   console.log(localStorage.loginSuccess);
-  // console.log(localStorage.loginSuccess);
   console.log(loginSuccess);
-
-  OnLoginSuccess = function () {
-    if (localStorage.loginSuccess == "true" || loginSuccess == true) {
-      localStorage.setItem("loginSuccess", "true");
-      document.getElementById("navTabs").classList.remove("m-fadeOut");
-      document.getElementById("navTabs").classList.add("m-fadeIn");
-      document.getElementById("hermesTitle").classList.remove("my-5");
-      document.getElementById("hermesTitle").classList.add("my-3");
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("logOutButton").style.display = "block";
-      console.log("success");
-      $ajaxUtils.sendGetRequest(
-        "tabContents.html",
-        function (inner_HTML) {
-          document.querySelector('.card-body').innerHTML = inner_HTML;
-        },
-        false
-      );
-      calOrdinal(dd);
-      mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
-      // document.getElementById("mailDate").placeholder = mailDate;
-    }
-  };
 
   mail_Day = function (mailDay) {
     if (mailDay == "Today") {
@@ -166,20 +231,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   };
 
-  var check = 0;
+  var showfieldCheck = 0;
   var colleagueDetails =
     '</div> <!-- Other PoC Details --> <div class="form-row mb-3" id="telephonicMail_ColleagueDetails"> <div class="col-xs-2" id="div_salutation_PoC_colleague" > <select class="form-control" id="salutation_PoC_colleague" > <option>Mr.</option> <option>Ms.</option> </select> </div> <div class="col" id="div_name_PoC_colleague" > <div class="input-group"> <div class="input-group-prepend"> <span class="input-group-text" id="name_PoC_colleaguePrepend" > <i class="fas fa-user" aria-hidden="true"></i> </span> </div> <input type="text" class="form-control" id="name_PoC_colleague" placeholder="Colleague&apos;s Name" aria-describedby="inputGroupPrepend2" required /> </div> </div>';
   showfield = function (person) {
-    if (person == "else" && check < 1) {
+    if (person == "else" && showfieldCheck < 1) {
       document
         .getElementById("telephonicMail_OtherPerson")
         .insertAdjacentHTML("afterend", colleagueDetails);
-      check++;
+      showfieldCheck++;
       document.getElementById("PoC_colleague").selectedIndex = "2";
     } else {
       console.log(person);
       document.getElementById("telephonicMail_ColleagueDetails").remove();
-      check = 0;
+      showfieldCheck = 0;
     }
   };
 
@@ -229,41 +294,45 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var PoCDetails = document.getElementById("CDCPoC_Regular").value;
 
     $ajaxUtils.sendGetRequest(
-      "templates/template.html",
-      function (mailBody) {
-        mailBody = insertProperty(mailBody, "mailToName", mailToName);
-        mailBody = insertProperty(
-          mailBody,
+      "templates/newtemplate.html",
+      function (mailContent) {
+        mailContent = insertProperty(mailContent, "mailToName", mailToName);
+        mailContent = insertProperty(
+          mailContent,
           "mailTypePlaceholder",
           mailTypePlaceholder
         );
-        mailBody = insertProperty(mailBody, "mailToName", mailToName);
-        mailBody = insertProperty(mailBody, "mailType", mailType);
-        mailBody = insertProperty(mailBody, "colleagueName", colleagueName);
-        mailBody = insertProperty(mailBody, "mailDate", mailDate);
-        mailBody = insertProperty(mailBody, "mailToCompany", mailToCompany);
-        mailBody = insertProperty(mailBody, "PoCName", CDCPoC.name[PoCDetails]);
-        mailBody = insertProperty(
-          mailBody,
+        mailContent = insertProperty(mailContent, "mailToName", mailToName);
+        mailContent = insertProperty(mailContent, "mailType", mailType);
+        mailContent = insertProperty(
+          mailContent,
+          "colleagueName",
+          colleagueName
+        );
+        mailContent = insertProperty(mailContent, "mailDate", mailDate);
+        mailContent = insertProperty(
+          mailContent,
+          "mailToCompany",
+          mailToCompany
+        );
+        mailContent = insertProperty(
+          mailContent,
+          "PoCName",
+          CDCPoC.name[PoCDetails]
+        );
+        mailContent = insertProperty(
+          mailContent,
           "phoneNumber",
           CDCPoC.phoneNumber[PoCDetails]
         );
-        mailBody = insertProperty(
-          mailBody,
+        mailContent = insertProperty(
+          mailContent,
           "mailAddress",
           CDCPoC.mailAddress[PoCDetails]
         );
-        // console.log(mailBody);
-        Email.send({
-          SecureToken: "7fd55f50-95f2-46c5-8a0d-5cc768b3559b",
-          To: mailTo,
-          From: "paras.19508@sscbs.du.ac.in",
-          Subject: mailSubject,
-          Body: mailBody,
-        }).then(function (message) {
-          alert("mail sent succesfully!");
-          document.getElementById("regularMailForm").reset();
-        });
+
+        document.querySelector(".modal-body").innerHTML = mailContent;
+        mailBody = mailContent;
       },
       false
     );
@@ -277,32 +346,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // console.log(PoCDetails);
   };
 
-  // Get the input field
-  var loginEmail = document.getElementById("loginEmail");
-
-  // Get the warning text
-  var CapsLockWarningEmail = document.getElementById("CapsLockWarningEmail");
-
-  // When the user presses any key on the keyboard, run the function
-  loginEmail.addEventListener("keyup", function (event) {
-    // If "caps lock" is pressed, display the warning text
-    if (event.getModifierState("CapsLock")) {
-      CapsLockWarningEmail.style.visibility = "visible";
-    } else {
-      CapsLockWarningEmail.style.visibility = "hidden";
-    }
-  });
-
-  var loginPassword = document.getElementById("loginPassword");
-  var text = document.getElementById("CapsLockWarning");
-
-  // When the user presses any key on the keyboard, run the function
-  loginPassword.addEventListener("keyup", function (event) {
-    // If "caps lock" is pressed, display the warning text
-    if (event.getModifierState("CapsLock")) {
-      text.style.visibility = "visible";
-    } else {
-      text.style.visibility = "hidden";
-    }
-  });
+  sendMail = function () {
+    accountPassword = document.getElementById("accountPassword").value;
+    // console.log(accountPassword);
+    // console.log(mailTo);
+    // console.log(mailSubject);
+    // console.log(mailBody);
+    Email.send({
+      Host: "smtp.gmail.com",
+      Username: "paras.19508@sscbs.du.ac.in",
+      Password: accountPassword,
+      To: mailTo,
+      From: "paras.19508@sscbs.du.ac.in",
+      Subject: mailSubject,
+      Body: mailBody,
+    }).then(function (message) {
+      if (message == "OK") {
+        alert("Mail sent successfully!");
+        document.getElementById("coldMailForm").reset();
+        document.getElementById("regularMailForm").reset();
+      } else {
+        alert("Wrong Password");
+      }
+    });
+  };
 });

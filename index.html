@@ -11,110 +11,25 @@
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <title>Hermes</title>
-    <style>
-      html,
-      body {
-        height: 100vh;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      .form-row {
-        width: 100%;
-      }
-      nav a {
-        color: white;
-        font-weight: bold;
-      }
-      nav a:hover {
-        color: white;
-        font-weight: bold;
-        border: none !important;
-      }
-      .form-group {
-          width: 60% !important;
-      }
-      #CapsLockWarningEmail {
-          visibility: hidden;
-          color: red !important;
-      }
-      #CapsLockWarning {
-          visibility: hidden;
-          color: red !important;
-      }
-      #loginFail {
-          visibility: hidden;
-          color: red !important;
-      }
-      #loginButton {
-          width: 25%;
-      }
-      @media only screen and (max-width: 400px) {
-        #loginButton {
-          width: 50%;
-            
-        }
-        .form-group {
-          width: 90% !important;
-        }
-      }
-      .m-fadeOut {
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s linear 300ms, opacity 300ms;
-      }
-      .m-fadeIn {
-        visibility: visible;
-        opacity: 1;
-        transition: visibility 0s linear 0s, opacity 300ms;
-      }
-      #logOutButton {
-        position: absolute;  
-        bottom: -1.5rem;
-        right: 1.5rem;
-        display: block;
-        height: 3rem;
-        width: 3rem;
-        border-radius: 50px; 
-        padding: .7rem;
-        background-color: rgb(253, 253, 253);
-      }
-      @media only screen and (max-width: 770px) {
-        #logOutButton {
-          position: absolute;  
-          top: 1.5rem;
-          height: 2.5rem;
-          width: 2.5rem;
-          background-color: rgb(255, 255, 255);
-        }
-      }
-      .card {
-        border-radius: .5rem;
-      }
-      .card-body {
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-        border-bottom-left-radius: .5rem;
-        border-bottom-right-radius: .5rem;
-      }      
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body class="bg-dark" onload="OnLoginSuccess()">
-    <div class="container d-flex justify-content-center align-items-center h-100" id="main-window">
+  <body class="" onload="OnLoginSuccess()">
+    <div
+      class="container d-flex justify-content-center align-items-center h-100"
+      id="main-window"
+    >
       <!-- Main Card -->
       <div class="row justify-content-center w-100">
         <div class="col col-lg-6">
-          <div class="card bg-success">
-            <div class="card-header text-white text-center" style="position: relative;">              
+          <div class="card">
+            <div
+              class="card-header text-white text-center"
+              style="position: relative;"
+            >
               <h1 class="my-5" id="hermesTitle">Hermes</h1>
               <nav class="m-fadeOut" id="navTabs">
                 <div
@@ -123,7 +38,7 @@
                   role="tablist"
                 >
                   <a
-                    class="nav-item nav-link"
+                    class="nav-item nav-link active"
                     id="nav-home-tab"
                     data-toggle="tab"
                     href="#nav-home"
@@ -133,7 +48,7 @@
                     >&ensp;Cold Mails&ensp;</a
                   >
                   <a
-                    class="nav-item nav-link active"
+                    class="nav-item nav-link"
                     id="nav-profile-tab"
                     data-toggle="tab"
                     href="#nav-profile"
@@ -158,83 +73,25 @@
                 </svg>
               </div>
             </div>
-            <div class="card-body bg-light">                        
-              <form id="loginForm" class="pb-4">
-                <label id="loginFail">...</label>
-                <div class="form-group">                  
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="loginEmail"
-                    onfocus="hideFail()"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                  />
-                  <small id="CapsLockWarningEmail" class="form-text text-muted"
-                    >CapsLock is on.</small
-                  >
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="loginPassword"
-                    onfocus="hideFail()"
-                    placeholder="Password"
-                  />
-                  <small id="CapsLockWarning" class="form-text text-muted"
-                    >CapsLock is on.</small
-                  >
-                </div>                
-                <input id="loginButton" onclick="login()" type="button" class="mt-3  btn btn-success" value="Login"></input>
-              </form>            
-            </div>            
+            <div class="card-body bg-light"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- <div class="position-absolute w-100 d-flex flex-column p-4">
-      <div class="toast ml-auto" role="alert" data-delay="700" data-autohide="false">
-          <div class="toast-header">
-              <strong class="mr-auto text-primary">Toast</strong>
-              <small class="text-muted">3 mins ago</small>
-              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-              </button>
-          </div>
-          <div class="toast-body"> Hey, there! This is a Bootstrap 4 toast. </div>
-      </div>
-  </div> -->
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
 
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
 
-  <!-- Add Firebase products that you want to use -->
-  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
-
-  <script src="js/firebaseAuth.js" type="text/JavaScript"></script>
+    <script src="js/firebaseAuth.js" type="text/JavaScript"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script src="js/ajax-util.js" type="text/JavaScript"></script>
     <script src="js/script.js" type="text/JavaScript"></script>

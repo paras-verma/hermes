@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   firebase.auth().onAuthStateChanged((firebaseUser) => {
     if (loginSuccess == true) {
+      console.log("loginSucces calleed");
       OnLoginSuccess();
     }
   });
