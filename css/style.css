@@ -12,13 +12,12 @@ body::after {
   position: absolute;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-index: -1;
   margin-right: -3vw;
   margin-bottom: -5vw;
 }
 .card {
   border: none;
-  z-index: 100;
 }
 #hermesTitle {
   display: inline-block;
