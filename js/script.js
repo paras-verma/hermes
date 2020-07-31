@@ -65,9 +65,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         "tabContents.html",
         function (inner_HTML) {
           document.querySelector(".card-body").innerHTML = inner_HTML;
-          calOrdinal(dd);
-          mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
-          document.getElementById("mailDate").placeholder = mailDate;
+          mail_Day("Today");
 
           const coldForm = document.getElementById("coldMailForm");
 
@@ -169,10 +167,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   //Date at which the mail is to be sent
   var mailDate = new Date();
-  var dd = String(mailDate.getDate()).padStart(2, "0");
+  var dd = String(mailDate.getDate());
   var ordinal;
 
   var mm = String(mailDate.getMonth() + 1);
+  mm = parseInt(mm);
   var month = [
     "January",
     "February",
@@ -187,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     "November",
     "December",
   ];
-  mm = month[mm - 1];
+  var monthName = month[mm - 1];
 
   var yyyy = mailDate.getFullYear();
 
@@ -210,19 +209,62 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   };
 
-  console.log(localStorage.loginSuccess);
-  console.log(loginSuccess);
+  // console.log(localStorage.loginSuccess);
+  // console.log(loginSuccess);
 
   mail_Day = function (mailDay) {
+    // console.log(mm);
     if (mailDay == "Today") {
       document.getElementById("mailDate").disabled = true;
       calOrdinal(dd);
-      mailDate = dd + ordinal + " " + mm + " " + yyyy + " (Today)";
+      mailDate = dd + ordinal + " " + monthName + " " + yyyy + " (Today)";
       document.getElementById("mailDate").value = mailDate;
     } else if (mailDay == "Yesterday") {
       document.getElementById("mailDate").disabled = true;
-      calOrdinal(dd - 1);
-      mailDate = dd - 1 + ordinal + " " + mm + " " + yyyy + " (Yesterday)";
+      if (dd == 1) {
+        // console.log(mailDay);
+        switch (mm) {
+          case 3:
+            if (yyyy % 4 == 0) {
+              dd = 29;
+            } else {
+              dd = 28;
+            }
+            calOrdinal(dd);
+            monthName = month[mm - 2];
+            break;
+          case 5:
+          case 7:
+          case 10:
+          case 12:
+            dd = 30;
+            calOrdinal(dd);
+            monthName = month[mm - 2];
+            break;
+          case 1:
+            yyyy -= 1;
+            monthName = month[11];
+          case 2:
+          case 4:
+          case 6:
+          case 8:
+          case 9:
+          case 11:
+            dd = 31;
+            calOrdinal(dd);
+            monthName = month[mm - 2];
+            // console.log(dd);
+            // console.log(ordinal);
+            // console.log(monthName);
+            break;
+        }
+        mailDate = dd + ordinal + " " + monthName + " " + yyyy + " (Yesterday)";
+        // console.log(mailDate);
+      } else {
+        calOrdinal(dd - 1);
+        mailDate =
+          dd - 1 + ordinal + " " + monthName + " " + yyyy + " (Yesterday)";
+      }
       document.getElementById("mailDate").value = mailDate;
     } else {
       document.getElementById("mailDate").disabled = false;
