@@ -1,10 +1,28 @@
 html,
 body {
   height: 100vh;
-  background-color: #2A2E35;
+  background-color: #2a2e35;
+  overflow: hidden;
+}
+body::after {
+  content: " 🕊";
+  font-size: 30vw;
+  filter: grayscale(100%);
+  opacity: 0.1;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  margin-right: -3vw;
+  margin-bottom: -5vw;
 }
 .card {
-    border: none;
+  border: none;
+  z-index: 100;
+}
+#hermesTitle {
+  display: inline-block;
+  vertical-align: middle;
 }
 form {
   display: flex;
@@ -42,12 +60,21 @@ nav a:hover {
 #loginButton {
   width: 25%;
 }
+/* for small device */
 @media only screen and (max-width: 400px) {
   #loginButton {
     width: 50%;
   }
   .form-group {
     width: 90% !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  body::after {
+    top: 0;
+    left: 0;
+    margin-top: 5vh;
+    margin-left: -0.5rem;
   }
 }
 .m-fadeOut {
@@ -71,16 +98,31 @@ nav a:hover {
   padding: 0.7rem;
   background-color: rgb(253, 253, 253);
 }
+/* medium devices */
 @media only screen and (max-width: 770px) {
   #logOutButton {
     position: absolute;
     top: 1.5rem;
     height: 3rem;
-    width: 3rem;   
-    background: none; 
+    width: 3rem;
+    background: none;
   }
   #logOutButton .st0 {
     fill: white;
+  }
+}
+@media only screen and (min-width: 770px) {
+  #hermesTitle::before {
+    content: " 🕊";
+    font-size: 2rem;
+    padding-right: 2rem;
+  }
+  #hermesTitle::after {
+    content: " 🕊";
+    font-size: 2rem;
+    padding-right: 2rem;
+    display: inline-block;
+    transform: rotateY(180deg) !important;
   }
 }
 .card {
@@ -91,7 +133,7 @@ nav a:hover {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;  
+  border-bottom-right-radius: 0.5rem;
   /* background-color: #2A2E35 !important; */
 }
 #coldMailPreview {
